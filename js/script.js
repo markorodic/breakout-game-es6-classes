@@ -44,6 +44,13 @@ class Ball {
     }
 }
 
+class Brick {
+    constructor(center) {
+        this.size = { x: 20, y: 7 }
+        this.center = center
+    }
+}
+
 window.onload = function() {
     let game = new Game("screen")
     game.playGame()
