@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 class Game {
     constructor(canvasId) {
@@ -11,10 +11,6 @@ class Game {
         this.score = 0
     }
 
-    draw() {
-        this.drawRect(this.player, this.ball)
-    }
-
     drawRect(player, ball) {
         this.ctx.fillRect(player.center.x - player.size.x / 2,
             player.center.y - player.size.y / 2,
@@ -24,8 +20,12 @@ class Game {
             ball.size.x, ball.size.y)
     }
 
+    draw() {
+        this.drawRect(this.player, this.ball)
+    }
+
     playGame() {
-        this.draw()
+        setInterval(this.draw.bind(this), 10)
     }
 }
 
