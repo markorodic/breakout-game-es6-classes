@@ -1,5 +1,3 @@
-"use strict"
-
 class Game {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId)
@@ -7,6 +5,8 @@ class Game {
         this.gameSize = { x: this.canvas.width, y: this.canvas.height }
         this.player = new Player(this.gameSize)
         this.ball = new Ball(this.gameSize)
+        this.bricks = this.drawBricks()
+        this.bricks
         this.lives = 3
         this.score = 0
     }
@@ -18,6 +18,21 @@ class Game {
         this.ctx.fillRect(ball.center.x - ball.size.x / 2,
             ball.center.y - ball.size.y / 2,
             ball.size.x, ball.size.y)
+        for (var i = 0; i < this.bricks.length; i++) {
+            this.ctx.fillRect(this.bricks[i].center.x - this.bricks[i].size.x / 2,
+            this.bricks[i].center.y - this.bricks[i].size.y / 2,
+            this.bricks[i].size.x, this.bricks[i].size.y)
+        }
+    }
+
+    drawBricks() {
+        var bricks = []
+        for (var i = 0; i < 540; i++) {
+            var x = 22 + (i % 20) * 24
+            var y = 40 + (i % 27) * 10
+            bricks.push(new Brick({ x: x, y: y}))
+        }
+        return bricks
     }
 
     draw() {
@@ -34,6 +49,7 @@ class Player {
         this.size = { x: 100, y: 10 }
         this.center = { x: gameSize.x / 2, y: gameSize.y-2 }
     }
+    //move
 }
 
 class Ball {
