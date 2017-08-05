@@ -6,7 +6,7 @@ class Game {
         this.player = new Player(this.gameSize)
         this.ball = new Ball(this.gameSize)
         this.bricks = this.drawBricks()
-        this.bricks
+        this.collisionDetection = new CollisionDetection()
         this.lives = 3
         this.score = 0
     }
@@ -36,9 +36,26 @@ class Game {
         return bricks
     }
 
+    filterBricks() {
+        // // console.log(this.ball, this.brick)
+        let self = this
+        this.bricks = this.bricks.filter(function(brick) {
+            return !self.collisionDetection.brickHit(self.ball, brick)
+        })
+    }
+
 
     update() {
+        this.filterBricks()
         this.player.update()
+        this.ball.update()
+        var self = this
+        this.bricks.forEach(function(brick) {
+            // self.collisionDetection.brickHit(self.ball, self.brick)
+        })
+        // this.bricks = this.bricks.filter(function(brick) {
+        //     return !self.collisionDetection.brickHit(self.ball, self.brick)
+        // })
     }
 
     draw() {
@@ -114,6 +131,16 @@ class Ball {
         this.gameSize = gameSize
         this.size = { x: 6, y: 6 }
         this.center = { x: 250, y: 450 }
+        this.velocity = { x: 2, y: -2 }
+    }
+
+    moveBall() {
+        this.center.x += this.velocity.x
+        this.center.y += this.velocity.y
+    }
+
+    update() {
+        this.moveBall()
     }
 }
 
@@ -121,6 +148,15 @@ class Brick {
     constructor(center) {
         this.size = { x: 20, y: 7 }
         this.center = center
+    }
+}
+
+class CollisionDetection {
+    brickHit(ball, brick) {
+        // console.log(brick)
+        var startX = brick.center.x - brick.size.x / 2
+        var startY = brick.center.y - brick.size.y / 2
+        return (ball.center.x > startX && ball.center.x < startX + brick.size.x && ball.center.y > startY && ball.center.y < startY + brick.size.y)
     }
 }
 
