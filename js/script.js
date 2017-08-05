@@ -12,6 +12,7 @@ class Game {
     }
 
     drawRect(player, ball) {
+        this.ctx.clearRect(0, 0, this.gameSize.x, this.gameSize.y)
         this.ctx.fillRect(player.center.x - player.size.x / 2,
             player.center.y - player.size.y / 2,
             player.size.x, player.size.y)
@@ -35,12 +36,22 @@ class Game {
         return bricks
     }
 
+
+    update() {
+        this.player.update()
+    }
+
     draw() {
         this.drawRect(this.player, this.ball)
     }
 
+    play() {
+        this.update()
+        this.draw()
+    }
+
     playGame() {
-        setInterval(this.draw.bind(this), 10)
+        setInterval(this.play.bind(this), 10)
     }
 }
 
@@ -48,8 +59,54 @@ class Player {
     constructor(gameSize) {
         this.size = { x: 100, y: 10 }
         this.center = { x: gameSize.x / 2, y: gameSize.y-2 }
+        this.input = new Input()
     }
-    //move
+
+    update() {
+        if (this.input.keyboardPress(this.input.key.left)) {
+            this.center.x -= 4
+            console.log('left')
+        } else if (this.input.keyboardPress(this.input.key.right)) {
+            this.center.x += 4
+            console.log('right')
+        }
+        // } else if (this.input.keyboardPress(this.input.key.space)) {
+        //     //*************************************
+        //     startBall.x = 2
+        //     startBall.y = -2
+        // }
+    }
+
+    printSide() {
+        this.input.keyboardPress(this.input.key.left)
+    }
+}
+
+class Input {
+    constructor() {
+        this.keyState = {}
+        this.key = { left: 37, right: 39, space: 32 }
+    }
+
+    // checkForKeyPress() {
+    //     window.onkeydown = function(e) {
+    //         this.keyState[e.keyCode] = true
+    //     }
+    //     window.onkeyup = function(e) {
+    //         this.keyState[e.keyCode] = false
+    //     }
+    // }
+
+    keyboardPress(keyCode) {
+        var self = this
+        window.onkeydown = function(e) {
+            self.keyState[e.keyCode] = true
+        }
+        window.onkeyup = function(e) {
+            self.keyState[e.keyCode] = false
+        }
+        return this.keyState[keyCode] === true
+    }
 }
 
 class Ball {
