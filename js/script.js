@@ -126,7 +126,12 @@ class Ball {
 
     update(collisions) {
         if (collisions.hitWall()) {
+            console.log('hitWall')
             this.velocity.x = -this.velocity.x
+        }
+        if (collisions.hitCeiling()) {
+            console.log('hitCeiling')
+            this.velocity.y = -this.velocity.y
         }
         // console.log(brickHit)
         // if (brickHit) {
@@ -152,7 +157,12 @@ class CollisionDetection {
 
     hitWall() {
         let ballRadius = this.ball.size.x / 2
-        return (this.ball.center.x > this.gameSize.x - ballRadius || this.ball.center.x < this.ballRadius)
+        return (this.ball.center.x > this.gameSize.x - ballRadius || this.ball.center.x < ballRadius)
+    }
+
+    hitCeiling() {
+        let ballRadius = this.ball.size.x / 2
+        return (this.ball.center.y < ballRadius)
     }
 
     // brickCollision(bricks) {
