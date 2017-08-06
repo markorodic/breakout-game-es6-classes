@@ -3,12 +3,12 @@ class Game {
         this.canvas = document.getElementById(canvasId)
         this.ctx = this.canvas.getContext("2d");
         this.gameSize = { x: this.canvas.width, y: this.canvas.height }
-        this.player = new Player(this.gameSize)
+        this.player = new Player(this.gameSize, this.collisions)
         this.ball = new Ball(this.gameSize)
         this.bricks = this.drawBricks()
-        this.collisionDetection = new CollisionDetection()
         this.lives = 3
         this.score = 0
+        this.collisions = new CollisionDetection(this.ball, this.player, this.gameSize)
     }
 
     drawRect(player, ball) {
@@ -37,25 +37,17 @@ class Game {
     }
 
     filterBricks() {
-        // // console.log(this.ball, this.brick)
-        let self = this
+        var self = this
         this.bricks = this.bricks.filter(function(brick) {
-            return !self.collisionDetection.brickHit(self.ball, brick)
+            return !self.collisions.brickHit(brick)
         })
     }
-
 
     update() {
         this.filterBricks()
         this.player.update()
-        this.ball.update()
-        var self = this
-        this.bricks.forEach(function(brick) {
-            // self.collisionDetection.brickHit(self.ball, self.brick)
-        })
-        // this.bricks = this.bricks.filter(function(brick) {
-        //     return !self.collisionDetection.brickHit(self.ball, self.brick)
-        // })
+        // console.log(this.collisions.brickCollision(this.bricks))
+        this.ball.update(this.collisions)
     }
 
     draw() {
@@ -82,16 +74,9 @@ class Player {
     update() {
         if (this.input.keyboardPress(this.input.key.left)) {
             this.center.x -= 4
-            console.log('left')
         } else if (this.input.keyboardPress(this.input.key.right)) {
             this.center.x += 4
-            console.log('right')
         }
-        // } else if (this.input.keyboardPress(this.input.key.space)) {
-        //     //*************************************
-        //     startBall.x = 2
-        //     startBall.y = -2
-        // }
     }
 
     printSide() {
@@ -127,7 +112,7 @@ class Input {
 }
 
 class Ball {
-    constructor(gameSize) {
+    constructor(gameSize, collisions) {
         this.gameSize = gameSize
         this.size = { x: 6, y: 6 }
         this.center = { x: 250, y: 450 }
@@ -139,7 +124,14 @@ class Ball {
         this.center.y += this.velocity.y
     }
 
-    update() {
+    update(collisions) {
+        if (collisions.hitWall()) {
+            this.velocity.x = -this.velocity.x
+        }
+        // console.log(brickHit)
+        // if (brickHit) {
+        //     // this.velocity.y = -this.velocity.y
+        // }
         this.moveBall()
     }
 }
@@ -152,11 +144,31 @@ class Brick {
 }
 
 class CollisionDetection {
-    brickHit(ball, brick) {
-        // console.log(brick)
+    constructor(ball, player, gameSize) {
+        this.ball = ball
+        this.player = player
+        this.gameSize = gameSize
+    }
+
+    hitWall() {
+        let ballRadius = this.ball.size.x / 2
+        return (this.ball.center.x > this.gameSize.x - ballRadius || this.ball.center.x < this.ballRadius)
+    }
+
+    // brickCollision(bricks) {
+    //     let self = this
+    //     bricks.forEach(function(brick) {
+    //         console.log(self.brickHit.bind(this))
+    //         // if (self.brickHit(brick)) {
+    //         //     return true
+    //         // }
+    //     })
+    // }
+
+    brickHit(brick) {
         var startX = brick.center.x - brick.size.x / 2
         var startY = brick.center.y - brick.size.y / 2
-        return (ball.center.x > startX && ball.center.x < startX + brick.size.x && ball.center.y > startY && ball.center.y < startY + brick.size.y)
+        return (this.ball.center.x > startX && this.ball.center.x < startX + brick.size.x && this.ball.center.y > startY && this.ball.center.y < startY + brick.size.y)
     }
 }
 
