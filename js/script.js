@@ -44,10 +44,12 @@ class Game {
     }
 
     update() {
+        // console.log(this.collisions.ballHit())
         this.filterBricks()
         this.player.update()
-        // console.log(this.collisions.brickCollision(this.bricks))
+        this.collisions.brickCollision(this.bricks)
         this.ball.update(this.collisions)
+        // console.log(this.collisions.ballHit())
     }
 
     draw() {
@@ -126,11 +128,17 @@ class Ball {
 
     update(collisions) {
         if (collisions.hitWall()) {
-            console.log('hitWall')
             this.velocity.x = -this.velocity.x
         }
         if (collisions.hitCeiling()) {
-            console.log('hitCeiling')
+            this.velocity.y = -this.velocity.y
+        }
+        if (collisions.ballHit()) {
+            console.log('ballHit')
+            this.velocity.y = -this.velocity.y
+        }
+        if (collisions.brickHit()) {
+            console.log('brickHit')
             this.velocity.y = -this.velocity.y
         }
         // console.log(brickHit)
@@ -155,6 +163,11 @@ class CollisionDetection {
         this.gameSize = gameSize
     }
 
+    ballHit() {
+        let ballRadius = this.ball.size.x / 2
+        return (this.ball.center.y == this.gameSize.y && this.player.center.x - this.player.size.x / 2 < this.ball.center.x && this.ball.center.x < this.player.center.x + this.player.size.x / 2)
+    }
+
     hitWall() {
         let ballRadius = this.ball.size.x / 2
         return (this.ball.center.x > this.gameSize.x - ballRadius || this.ball.center.x < ballRadius)
@@ -165,20 +178,17 @@ class CollisionDetection {
         return (this.ball.center.y < ballRadius)
     }
 
-    // brickCollision(bricks) {
-    //     let self = this
-    //     bricks.forEach(function(brick) {
-    //         console.log(self.brickHit.bind(this))
-    //         // if (self.brickHit(brick)) {
-    //         //     return true
-    //         // }
-    //     })
-    // }
-
     brickHit(brick) {
         var startX = brick.center.x - brick.size.x / 2
         var startY = brick.center.y - brick.size.y / 2
         return (this.ball.center.x > startX && this.ball.center.x < startX + brick.size.x && this.ball.center.y > startY && this.ball.center.y < startY + brick.size.y)
+    }
+
+    brickCollision(bricks) {
+        let self = this
+        bricks.forEach(function(brick) {
+            self.brickHit(brick)
+        })
     }
 }
 
