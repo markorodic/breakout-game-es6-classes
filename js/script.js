@@ -49,6 +49,13 @@ class Game {
         this.collisions.brickCollision(this.bricks)
         this.ball.update(this.collisions)
         this.collisions.bricks = this.bricks
+        this.updateScore()
+    }
+
+    updateLives() {
+        if (this.collisions.ballDrop()) {
+            console.log(this.lives)
+        }
     }
 
     draw() {
@@ -195,6 +202,10 @@ class CollisionDetection {
         this.bricks.forEach(function(brick) {
             
         })
+    }
+
+    ballDrop() {
+        return (this.ball.center.y > this.gameSize.y)
     }
 }
 
