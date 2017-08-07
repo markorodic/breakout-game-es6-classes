@@ -8,7 +8,7 @@ class Game {
         this.bricks = this.drawBricks()
         this.lives = 3
         this.score = 0
-        this.collisions = new CollisionDetection(this.ball, this.player, this.gameSize)
+        this.collisions = new CollisionDetection(this.ball, this.player, this.gameSize, this.bricks)
     }
 
     drawRect(player, ball) {
@@ -44,12 +44,10 @@ class Game {
     }
 
     update() {
-        // console.log(this.collisions.ballHit())
         this.filterBricks()
         this.player.update()
         this.collisions.brickCollision(this.bricks)
         this.ball.update(this.collisions)
-        // console.log(this.collisions.ballHit())
     }
 
     draw() {
@@ -62,7 +60,7 @@ class Game {
     }
 
     playGame() {
-        setInterval(this.play.bind(this), 10)
+        setInterval(() => this.play(), 10)
     }
 }
 
@@ -91,15 +89,6 @@ class Input {
         this.keyState = {}
         this.key = { left: 37, right: 39, space: 32 }
     }
-
-    // checkForKeyPress() {
-    //     window.onkeydown = function(e) {
-    //         this.keyState[e.keyCode] = true
-    //     }
-    //     window.onkeyup = function(e) {
-    //         this.keyState[e.keyCode] = false
-    //     }
-    // }
 
     keyboardPress(keyCode) {
         var self = this
@@ -134,15 +123,25 @@ class Ball {
             this.velocity.y = -this.velocity.y
         }
         if (collisions.ballHit()) {
-            console.log('ballHit')
             this.velocity.y = -this.velocity.y
         }
-        if (collisions.brickHit()) {
-            console.log('brickHit')
-            this.velocity.y = -this.velocity.y
-        }
-        // console.log(brickHit)
-        // if (brickHit) {
+
+        let self = this
+        collisions.bricks.forEach(function(brick) {
+            if (collisions.brickHit(brick)) {
+                self.velocity.y = -self.velocity.y
+            }
+        })
+        // if (collisions.brickHit()) {
+        //     console.log('brickHit')
+        //     // this.velocity.y = -this.velocity.y
+        // }
+
+        // collisions.brickCollision()
+
+        // console.log(collisions.ballHit() == 'a')
+        // if (collisions.brickCollision()) {
+        //     console.log('brick hit!')
         //     // this.velocity.y = -this.velocity.y
         // }
         this.moveBall()
@@ -157,10 +156,11 @@ class Brick {
 }
 
 class CollisionDetection {
-    constructor(ball, player, gameSize) {
+    constructor(ball, player, gameSize, bricks) {
         this.ball = ball
         this.player = player
         this.gameSize = gameSize
+        this.bricks = bricks
     }
 
     ballHit() {
@@ -184,10 +184,15 @@ class CollisionDetection {
         return (this.ball.center.x > startX && this.ball.center.x < startX + brick.size.x && this.ball.center.y > startY && this.ball.center.y < startY + brick.size.y)
     }
 
-    brickCollision(bricks) {
-        let self = this
-        bricks.forEach(function(brick) {
-            self.brickHit(brick)
+    brickCollision() {
+        // return this.testFun()
+        // let self = this
+        // let b = function() {
+        //     return self.testFun()
+        //     // self.brickHit()
+        // }
+        this.bricks.forEach(function(brick) {
+            
         })
     }
 }
