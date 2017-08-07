@@ -50,13 +50,23 @@ class Game {
         this.ball.update(this.collisions)
         this.collisions.bricks = this.bricks
         this.updateScore()
+        // this.updateLives()
     }
 
-    updateLives() {
-        if (this.collisions.ballDrop()) {
-            console.log(this.lives)
-        }
+    updateScore() {
+        var self = this
+        this.collisions.bricks.forEach(function(brick) {
+            if (self.collisions.brickHit(brick)) {
+                self.score += 1
+            }
+        })
     }
+
+    // updateLives() {
+    //     if (this.collisions.ballDrop()) {
+    //         console.log(this.lives)
+    //     }
+    // }
 
     draw() {
         this.drawRect(this.player, this.ball)
@@ -153,6 +163,14 @@ class Ball {
         //     // this.velocity.y = -this.velocity.y
         // }
         this.moveBall()
+        this.startAgain()
+    }
+
+    startAgain() {
+        if (this.center.y > this.gameSize.y) {
+            this.center = { x: 250, y: 450 }
+            this.velocity = { x: 0, y: -0 }
+        }
     }
 }
 
