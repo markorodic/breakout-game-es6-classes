@@ -48,6 +48,7 @@ class Game {
         this.player.update()
         this.collisions.brickCollision(this.bricks)
         this.ball.update(this.collisions)
+        this.collisions.bricks = this.bricks
     }
 
     draw() {
