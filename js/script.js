@@ -26,6 +26,10 @@ class Game {
         }
     }
 
+    drawText(ctx, text, variable, left, top) {
+        ctx.fillText(text + variable, left, top)
+    }
+
     drawBricks() {
         var bricks = []
         for (var i = 0; i < 540; i++) {
@@ -50,7 +54,7 @@ class Game {
         this.ball.update(this.collisions)
         this.collisions.bricks = this.bricks
         this.updateScore()
-        // this.updateLives()
+        this.updateLives()
     }
 
     updateScore() {
@@ -62,11 +66,11 @@ class Game {
         })
     }
 
-    // updateLives() {
-    //     if (this.collisions.ballDrop()) {
-    //         console.log(this.lives)
-    //     }
-    // }
+    updateLives() {
+        if (this.collisions.ballDrop()) {
+            self.lives -= 1
+        }
+    }
 
     draw() {
         this.drawRect(this.player, this.ball)
@@ -134,6 +138,7 @@ class Ball {
     }
 
     update(collisions) {
+
         if (collisions.hitWall()) {
             this.velocity.x = -this.velocity.x
         }
@@ -167,7 +172,7 @@ class Ball {
     }
 
     startAgain() {
-        if (this.center.y > this.gameSize.y) {
+        if (this.center.y - 4 > this.gameSize.y) {
             this.center = { x: 250, y: 450 }
             this.velocity = { x: 0, y: -0 }
         }
