@@ -68,7 +68,9 @@ class Game {
 
     updateLives() {
         if (this.collisions.ballDrop()) {
+            console.log(this.lives)
             self.lives -= 1
+            console.log(this.lives)
         }
     }
 
@@ -93,6 +95,8 @@ class Player {
         this.size = { x: 100, y: 10 }
         this.center = { x: gameSize.x / 2, y: gameSize.y-2 }
         this.input = new Input()
+        this.moving = false
+        this.space = false
     }
 
     update() {
@@ -100,6 +104,8 @@ class Player {
             this.center.x -= 4
         } else if (this.input.keyboardPress(this.input.key.right)) {
             this.center.x += 4
+        } else if (this.input.keyboardPress(this.input.key.space)) {
+            this.space = true
         }
     }
 
@@ -131,7 +137,8 @@ class Ball {
         this.gameSize = gameSize
         this.size = { x: 6, y: 6 }
         this.center = { x: 250, y: 450 }
-        this.velocity = { x: 2, y: -2 }
+        this.velocity = { x: 0, y: 0 }
+        this.moving = false
     }
 
     moveBall() {
@@ -140,7 +147,13 @@ class Ball {
     }
 
     update(collisions) {
+        // collisions.ballStart()
+        collisions.ballStart()
 
+        if (this.moving) {
+            this.velocity = { x: 2, y: -2 }
+            this.moving = false
+        }
         if (collisions.hitWall()) {
             this.velocity.x = -this.velocity.x
         }
@@ -231,6 +244,14 @@ class CollisionDetection {
 
     ballDrop() {
         return (this.ball.center.y > this.gameSize.y)
+    }
+
+    ballStart() {
+        var self = this
+        if (this.player.space) {
+            this.player.space = false
+            this.ball.moving = true
+        }
     }
 }
 
