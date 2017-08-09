@@ -74,6 +74,8 @@ class Game {
 
     draw() {
         this.drawRect(this.player, this.ball)
+        this.drawText(this.ctx, "Score: ", this.score, 13, 20)
+        this.drawText(this.ctx, "Lives: ", this.lives, this.gameSize.x - 47, 20)
     }
 
     play() {
