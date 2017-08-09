@@ -68,9 +68,7 @@ class Game {
 
     updateLives() {
         if (this.collisions.ballDrop()) {
-            console.log(this.lives)
-            self.lives -= 1
-            console.log(this.lives)
+            this.lives -= 1
         }
     }
 
@@ -170,6 +168,10 @@ class Ball {
                 self.velocity.y = -self.velocity.y
             }
         })
+        if (collisions.ballDrop()) {
+            this.center = { x: 250, y: 450 }
+            this.velocity = { x: 0, y: -0 }
+        }
         // if (collisions.brickHit()) {
         //     console.log('brickHit')
         //     // this.velocity.y = -this.velocity.y
@@ -183,15 +185,15 @@ class Ball {
         //     // this.velocity.y = -this.velocity.y
         // }
         this.moveBall()
-        this.startAgain()
+        // this.startAgain()
     }
 
-    startAgain() {
-        if (this.center.y - 4 > this.gameSize.y) {
-            this.center = { x: 250, y: 450 }
-            this.velocity = { x: 0, y: -0 }
-        }
-    }
+    // startAgain() {
+    //     if (this.center.y - 4 > this.gameSize.y) {
+    //         this.center = { x: 250, y: 450 }
+    //         this.velocity = { x: 0, y: -0 }
+    //     }
+    // }
 }
 
 class Brick {
