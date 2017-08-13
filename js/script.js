@@ -10,7 +10,6 @@ class Game {
         this.score = 0
         this.collisions = new CollisionDetection(this.ball, this.player, this.gameSize, this.bricks)
     }
-
     drawRect(player, ball) {
         this.ctx.clearRect(0, 0, this.gameSize.x, this.gameSize.y)
         this.ctx.fillRect(player.center.x - player.size.x / 2,
@@ -25,11 +24,9 @@ class Game {
             this.bricks[i].size.x, this.bricks[i].size.y)
         }
     }
-
     drawText(ctx, text, variable, left, top) {
         ctx.fillText(text + variable, left, top)
     }
-
     drawBricks() {
         var bricks = []
         for (var i = 0; i < 540; i++) {
@@ -39,14 +36,12 @@ class Game {
         }
         return bricks
     }
-
     filterBricks() {
         var self = this
         this.bricks = this.bricks.filter(function(brick) {
             return !self.collisions.brickHit(brick)
         })
     }
-
     update() {
         this.filterBricks()
         this.player.update()
@@ -56,7 +51,6 @@ class Game {
         this.updateScore()
         this.updateLives()
     }
-
     updateScore() {
         var self = this
         this.collisions.bricks.forEach(function(brick) {
@@ -65,24 +59,19 @@ class Game {
             }
         })
     }
-
     updateLives() {
         if (this.collisions.ballDrop()) {
-            this.lives -= 1
         }
     }
-
     draw() {
         this.drawRect(this.player, this.ball)
         this.drawText(this.ctx, "Score: ", this.score, 13, 20)
         this.drawText(this.ctx, "Lives: ", this.lives, this.gameSize.x - 47, 20)
     }
-
     play() {
         this.update()
         this.draw()
     }
-
     playGame() {
         setInterval(() => this.play(), 10)
     }
@@ -96,7 +85,6 @@ class Player {
         this.moving = false
         this.space = false
     }
-
     update() {
         if (this.input.keyboardPress(this.input.key.left)) {
             this.center.x -= 4
@@ -106,7 +94,6 @@ class Player {
             this.space = true
         }
     }
-
     printSide() {
         this.input.keyboardPress(this.input.key.left)
     }
@@ -117,7 +104,6 @@ class Input {
         this.keyState = {}
         this.key = { left: 37, right: 39, space: 32 }
     }
-
     keyboardPress(keyCode) {
         var self = this
         window.onkeydown = function(e) {
@@ -138,16 +124,13 @@ class Ball {
         this.velocity = { x: 0, y: 0 }
         this.moving = false
     }
-
     moveBall() {
         this.center.x += this.velocity.x
         this.center.y += this.velocity.y
     }
 
     update(collisions) {
-        // collisions.ballStart()
         collisions.ballStart()
-
         if (this.moving) {
             this.velocity = { x: 2, y: -2 }
             this.moving = false
@@ -172,28 +155,8 @@ class Ball {
             this.center = { x: 250, y: 450 }
             this.velocity = { x: 0, y: -0 }
         }
-        // if (collisions.brickHit()) {
-        //     console.log('brickHit')
-        //     // this.velocity.y = -this.velocity.y
-        // }
-
-        // collisions.brickCollision()
-
-        // console.log(collisions.ballHit() == 'a')
-        // if (collisions.brickCollision()) {
-        //     console.log('brick hit!')
-        //     // this.velocity.y = -this.velocity.y
-        // }
         this.moveBall()
-        // this.startAgain()
     }
-
-    // startAgain() {
-    //     if (this.center.y - 4 > this.gameSize.y) {
-    //         this.center = { x: 250, y: 450 }
-    //         this.velocity = { x: 0, y: -0 }
-    //     }
-    // }
 }
 
 class Brick {
@@ -210,44 +173,30 @@ class CollisionDetection {
         this.gameSize = gameSize
         this.bricks = bricks
     }
-
     ballHit() {
         let ballRadius = this.ball.size.x / 2
         return (this.ball.center.y == this.gameSize.y && this.player.center.x - this.player.size.x / 2 < this.ball.center.x && this.ball.center.x < this.player.center.x + this.player.size.x / 2)
     }
-
     hitWall() {
         let ballRadius = this.ball.size.x / 2
         return (this.ball.center.x > this.gameSize.x - ballRadius || this.ball.center.x < ballRadius)
     }
-
     hitCeiling() {
         let ballRadius = this.ball.size.x / 2
         return (this.ball.center.y < ballRadius)
     }
-
     brickHit(brick) {
         var startX = brick.center.x - brick.size.x / 2
         var startY = brick.center.y - brick.size.y / 2
         return (this.ball.center.x > startX && this.ball.center.x < startX + brick.size.x && this.ball.center.y > startY && this.ball.center.y < startY + brick.size.y)
     }
-
     brickCollision() {
-        // return this.testFun()
-        // let self = this
-        // let b = function() {
-        //     return self.testFun()
-        //     // self.brickHit()
-        // }
         this.bricks.forEach(function(brick) {
-            
         })
     }
-
     ballDrop() {
         return (this.ball.center.y > this.gameSize.y)
     }
-
     ballStart() {
         var self = this
         if (this.player.space) {
