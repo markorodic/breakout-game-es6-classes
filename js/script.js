@@ -72,8 +72,13 @@ class Game {
         this.update()
         this.draw()
     }
+
     playGame() {
-        setInterval(() => this.play(), 10)
+        var self = this
+        requestAnimationFrame(function render(){
+            self.play()
+            requestAnimationFrame(render)
+        })
     }
 }
 
