@@ -180,7 +180,8 @@ class CollisionDetection {
     }
     ballHit() {
         let ballRadius = this.ball.size.x / 2
-        return (this.ball.center.y == this.gameSize.y && this.player.center.x - this.player.size.x / 2 < this.ball.center.x && this.ball.center.x < this.player.center.x + this.player.size.x / 2)
+        let playerTop = this.player.size.y/2 - 1
+        return (this.ball.center.y + playerTop == this.player.center.y && this.player.center.x - this.player.size.x / 2 < this.ball.center.x && this.ball.center.x < this.player.center.x + this.player.size.x / 2)
     }
     hitWall() {
         let ballRadius = this.ball.size.x / 2
