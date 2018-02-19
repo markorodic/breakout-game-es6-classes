@@ -12,27 +12,35 @@ class Game {
     }
     drawRect(player, ball) {
         this.ctx.clearRect(0, 0, this.gameSize.x, this.gameSize.y)
+        this.ctx.fillStyle = '#C6494B'
         this.ctx.fillRect(player.center.x - player.size.x / 2,
             player.center.y - player.size.y / 2,
             player.size.x, player.size.y)
+        this.ctx.fillStyle = '#C6494B'
         this.ctx.fillRect(ball.center.x - ball.size.x / 2,
             ball.center.y - ball.size.y / 2,
             ball.size.x, ball.size.y)
+        this.ctx.fillStyle = "black"
+        this.ctx.fillRect(0,55,392,15)
         for (var i = 0; i < this.bricks.length; i++) {
+            this.ctx.fillStyle = this.bricks[i].colour
             this.ctx.fillRect(this.bricks[i].center.x - this.bricks[i].size.x / 2,
             this.bricks[i].center.y - this.bricks[i].size.y / 2,
             this.bricks[i].size.x, this.bricks[i].size.y)
         }
     }
-    drawText(ctx, text, variable, left, top) {
-        ctx.fillText(text + variable, left, top)
+    drawText(ctx, variable, left, top) {
+        this.ctx.fillStyle = '#D3D7D0'
+        ctx.fillText(variable, left, top)
+        ctx.font = '40px "Press Start 2P"'
     }
     drawBricks() {
         var bricks = []
-        for (var i = 0; i < 540; i++) {
-            var x = 22 + (i % 20) * 24
-            var y = 40 + (i % 27) * 10
-            bricks.push(new Brick({ x: x, y: y}))
+        for (var i = 0; i < 84; i++) {
+            var x = 10 + (i % 13)* 31
+            var y = 105 + (i % 6) * 10
+            var colour = this.whichColour(y)
+            bricks.push(new Brick({ x: x, y: y}, colour))
         }
         return bricks
     }
@@ -65,8 +73,8 @@ class Game {
     }
     draw() {
         this.drawRect(this.player, this.ball)
-        this.drawText(this.ctx, "Score: ", this.score, 13, 20)
-        this.drawText(this.ctx, "Lives: ", this.lives, this.gameSize.x - 47, 20)
+        this.drawText(this.ctx, this.score, 96, 50)
+        this.drawText(this.ctx, this.lives, this.gameSize.x - 135, 50)
     }
     play() {
         this.update()
@@ -79,5 +87,23 @@ class Game {
             self.play()
             requestAnimationFrame(render)
         })
+    }
+
+    whichColour(xPostion) {
+        switch (xPostion) {
+            case 105:
+                return '#C6494B'
+            case 115:
+                return '#C46C40'
+            case 125:
+                return '#B37938'
+            case 135:
+                return '#A2A136'
+            case 145:
+            return '#4B9F4C'
+            case 155:
+                return '#434DC5'
+            break;
+        }
     }
 }

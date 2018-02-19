@@ -2,7 +2,7 @@ class Ball {
     constructor(gameSize, collisions) {
         this.gameSize = gameSize
         this.size = { x: 6, y: 6 }
-        this.center = { x: 250, y: 450 }
+        this.center = { x: 200, y: 400 }
         this.velocity = { x: 0, y: 0 }
         this.moving = false
     }
@@ -14,7 +14,7 @@ class Ball {
     update(collisions) {
         collisions.ballStart()
         if (this.moving) {
-            this.velocity = { x: 2, y: -2 }
+            this.velocity = { x: 2, y: 2 }
             this.moving = false
         }
         if (collisions.hitWall()) {
