@@ -5,16 +5,17 @@ class Player {
         this.input = new Input()
         this.moving = false
         this.space = false
+        this.gameSize = gameSize
     }
     update() {
         if (this.input.keyboardPress(this.input.key.left)) {
-            if (this.center.x < 47) {
+            if (this.center.x < this.size.x / 2) {
                 this.center.x
             } else {
                 this.center.x -= 4
             }
         } else if (this.input.keyboardPress(this.input.key.right)) {
-            if (this.center.x > 447) {
+            if (this.center.x > this.gameSize.x - this.size.x / 2) {
                 this.center.x
             } else {
                 this.center.x += 4
