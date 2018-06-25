@@ -34,7 +34,7 @@ class Ball {
             }
         })
         if (collisions.ballDrop()) {
-            this.center = { x: 250, y: 450 }
+            this.center = { x: 200, y: 400 }
             this.velocity = { x: 0, y: -0 }
         }
         this.moveBall()

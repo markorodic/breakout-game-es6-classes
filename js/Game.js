@@ -51,6 +51,7 @@ class Game {
         })
     }
     update() {
+        this.updateGame()
         this.filterBricks()
         this.player.update()
         this.collisions.brickCollision(this.bricks)
@@ -58,6 +59,13 @@ class Game {
         this.collisions.bricks = this.bricks
         this.updateScore()
         this.updateLives()
+    }
+    updateGame() {
+      self = this
+      if (this.lives < 0) {
+        self.lives = 3
+        self.score = 0
+      }
     }
     updateScore() {
         var self = this
@@ -68,7 +76,9 @@ class Game {
         })
     }
     updateLives() {
+        var self = this
         if (this.collisions.ballDrop()) {
+          self.lives -= 1
         }
     }
     draw() {

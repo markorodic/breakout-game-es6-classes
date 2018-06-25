@@ -1,7 +1,7 @@
 class Player {
     constructor(gameSize) {
-        this.size = { x: 60, y: 7},
-        this.center = { x: gameSize.x / 2, y: gameSize.y-2 }
+        this.size = { x: 60, y: 6},
+        this.center = { x: gameSize.x / 2, y: gameSize.y-3 }
         this.input = new Input()
         this.moving = false
         this.space = false
