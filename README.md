@@ -3,7 +3,7 @@ This is part: 2 of a series of projects building a clone of the Atari game Break
 * [Breakout - Javascript prototypal inheritance](https://github.com/markorodic/breakout-game)
 * Breakout - Javascript es6 classes
 * [Breakout - functional Javascript](https://github.com/markorodic/breakout-game-functional-js)
-* [Breakout - Elm](https://github.com/markorodic/breakout-game-functional-js)
+* [Breakout - Elm](https://github.com/markorodic/elm-breakout-game)
 
 A blog comparing and discussing the things that I learnt can be found [here](https://medium.com/@mrmarkorodic/building-a-game-in-four-different-ways-f629f91934c2).
 
